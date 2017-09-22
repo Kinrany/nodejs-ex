@@ -1,0 +1,102 @@
+<html>
+<head>
+    <style>
+        .input-error > input {
+            background-color: #ff8888;
+        }
+
+        #input-error-label {
+            visibility: hidden;
+            color: #ff4444;
+        }
+
+        .input-error > #input-error-label {
+            visibility: visible;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var inputForm = $('#input-form');
+            var inputField = $('#input-field');
+            var outputList = $('#output-list');
+            var outputCount = $('#output-count');
+            var outputElementTemplate = $('#output-element-template');
+
+            var inputErrorClass = "input-error";
+
+            function showErrorMessage() {
+                inputForm.toggleClass(inputErrorClass, true);
+            }
+
+            function hideErrorMessage() {
+                inputForm.toggleClass(inputErrorClass, false);
+            }
+
+            function addOutput(inputNumber) {
+                console.assert(typeof(number) === "number");
+
+                var element = $(outputElementTemplate.html());
+                element.text(inputNumber);
+                element.appendTo(outputList);
+            }
+
+            function handleInput(inputString) {
+                var inputNumber = +inputString;
+                if ($.trim(inputString) == "" || isNaN(inputNumber)) {
+                showErrorMessage();
+                } else {
+                hideErrorMessage();
+                addOutput(inputNumber);
+                }
+            }
+
+            inputForm.on('submit', function() {
+                var inputString = inputField.val();
+                inputField.val("");
+                handleInput(inputString);
+                return false;
+            });
+
+            outputList.on('DOMNodeInserted DOMNodeRemoved', function() {
+                var numbers = outputList.children().length;
+                outputCount.text(numbers);
+            });
+        });
+    </script>
+    <title>Сетевое программирование - ЛР 1</title>
+</head>
+<body>
+    <div id="lab">
+        Лабораторная работа 1
+    </div>
+    <div id="author">
+        Руслан Фадеев
+    </div>
+    <div id="lab-var">
+        Вариант 15
+    </div>
+    <div id="problem">
+        Из нескольких введенных значений определить количество правильно введенных чисел.
+    </div>
+    <hr>
+    <div id="solution">
+        <form id="input-form">
+            Введите новое число:
+            <input type="text" id="input-field" />
+            <label for="input-field" id="input-error-label">
+                Введённая строка - не число.
+            </label>
+        </form>
+        <p>Список введённых чисел:</p>
+        <ol id="output-list"></ol>
+        Количество введённых чисел:
+        <div id="output-count"> 0 </div>
+    </div>
+    
+    <template id="output-element-template">
+        <li class="output-element"></li>
+    </template>
+        
+</body>
+</html>
