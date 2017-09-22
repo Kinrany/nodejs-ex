@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="static/lab2.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="static/lab2.js"></script>
+</head>
+
+<body>
+    <a href="/">В меню</a>
+    <hr/>
+    <p>Лабораторная работа 2</p>
+    <p>Руслан Фадеев</p>
+    <p>Вариант 8</p>
+    <p>Задание: анкета с несколькими пунктами, статистика по собранным данным.</p>
+    <hr/>
+    <form submit="return false;">
+        <label for="#input-name">Имя: </label>
+        <input type="text" id="input-name" />
+        <ul id="input-question-list"></ul>
+    </form>
+
+    <template id="input-question-template">
+        <li class="input-question-item">
+            <label class="input-question-label"></label>
+            <select class="input-question-select"></select>
+        </li>
+    </template>
+</body>
+
+</html>
