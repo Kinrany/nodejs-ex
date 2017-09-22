@@ -1,5 +1,7 @@
+let questionsJsonUrl = "questions.json";
+
 $(document).ready(function () {
-    $.getJSON("lab2/questions.json").done(function (data) {
+    $.getJSON(questionsJsonUrl).done(function (data) {
         const {questions} = data;
 
         const inputQuestionTemplate = $("#input-question-template").html();
