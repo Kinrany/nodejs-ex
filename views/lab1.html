@@ -1,35 +1,53 @@
 <html>
+
 <head>
     <title>Сетевое программирование - Лабораторная работа 1</title>
-    <link rel="stylesheet" type="text/css" href="lab1.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="lab1.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
+
 <body>
-    <a href="/">В меню</a>
-    <hr/>
-    <p>Лабораторная работа 1</p>
-    <p>Руслан Фадеев</p>
-    <p>Вариант 15</p>
-    <p>Задача: Из нескольких введенных значений определить количество правильно введенных чисел.</p>
-    <hr/>
-    <div id="solution">
-        <form id="input-form">
-            Введите новое число:
-            <input type="text" id="input-field" />
-            <label for="input-field" id="input-error-label">
-                Введённая строка - не число.
-            </label>
-        </form>
-        <p>Список введённых чисел:</p>
-        <ol id="output-list"></ol>
-        Количество введённых чисел:
-        <div id="output-count"> 0 </div>
+    <nav class="row">
+        <a href="/" class="col">В меню</a>
+    </nav>
+    <div class="section row">
+        <p class="col"><b>Лабораторная работа 1</b></p>
+        <p class="col push-s1">Вариант 15</p>
+        <p class="col s12">Задача: Из нескольких введенных значений определить количество правильно введенных чисел.</p>
     </div>
-    
+    <div class="divider"></div>
+    <div class="container">
+        <div class="section">
+            <form id="input-form" class="row">
+                <p class="col">Введите новое число:</p>
+                <input type="text" id="input-field" class="col s4" />
+                <p id="input-error-label" class="col s5">
+                    Введённая строка - не число.
+                    </label>
+            </form>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <p>Список введённых чисел:</p>
+            <ol id="output-list"></ol>
+            Количество введённых чисел:
+            <div id="output-count"> 0 </div>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section row">
+        <p class="col s12">Руслан Фадеев</p>
+    </div>
+
     <template id="output-element-template">
         <li class="output-element"></li>
     </template>
-        
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="lab1.js"></script>
 </body>
+
 </html>
