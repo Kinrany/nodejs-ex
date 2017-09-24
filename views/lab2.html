@@ -1,31 +1,54 @@
 <html>
 
 <head>
+    <title>Сетевое программирование - Лабораторная работа 2</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="lab2.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<body>
-    <a href="/">В меню</a>
-    <hr/>
-    <p>Лабораторная работа 2</p>
-    <p>Руслан Фадеев</p>
-    <p>Вариант 8</p>
-    <p>Задание: анкета с несколькими пунктами, статистика по собранным данным.</p>
-    <hr/>
-    <form submit="return false;">
-        <label for="#input-name">Имя: </label>
-        <input type="text" id="input-name" />
-        <ul id="input-question-list"></ul>
-    </form>
+<body class="row">
+    <nav>
+        <div class="nav-wrapper col s12">
+            <a class="breadcrumb" href="/">Меню</a>
+            <a class="breadcrumb" href="/lab2">Лабораторная №2</a>
+        </div>
+    </nav>
+    <div class="row flowtext">
+        <div class="col s3">
+            <div class="section">
+                <h4>Лабораторная №2</h4>
+                <h5>Вариант 8</h5>
+                <h5>Руслан Фадеев</h5>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <h5>Задача:</h5>
+                Создать анкету с несколькими пунктами, показать статистику по собранным данным.
+            </div>
+        </div>
+        <div class="col s9">
+            <form id="input-form" class="row" submit="return false;">
+                <div class="col s12">
+                    Имя:
+                    <div class="input-field inline">
+                        <input id="input-name" type="text" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <template id="input-question-template">
-        <li class="input-question-item">
-            <label class="input-question-label"></label>
+        <div class="input-question-item input-field col s12">
+            <span class="input-question-label"></span>
             <select class="input-question-select"></select>
-        </li>
+        </div>
     </template>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="lab2.js"></script>
 </body>
 
