@@ -1,18 +1,17 @@
 $(document).ready(function () {
     var inputForm = $('#input-form');
     var inputField = $('#input-field');
+    var inputErrorLabel = $('#input-error-label');
     var outputList = $('#output-list');
     var outputCount = $('#output-count');
     var outputElementTemplate = $('#output-element-template');
 
-    var inputErrorClass = "input-error";
-
     function showErrorMessage() {
-        inputForm.toggleClass(inputErrorClass, true);
+        inputErrorLabel.toggleClass("hide", false);
     }
 
     function hideErrorMessage() {
-        inputForm.toggleClass(inputErrorClass, false);
+        inputErrorLabel.toggleClass("hide", true);
     }
 
     function addOutput(inputNumber) {

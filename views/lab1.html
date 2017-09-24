@@ -8,41 +8,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<body>
-    <nav class="row">
-        <a href="/" class="col">В меню</a>
+<body class="row">
+    <nav>
+        <div class="nav-wrapper col s12">
+            <a class="breadcrumb" href="/">Меню</a>
+            <a class="breadcrumb" href="/lab1">Лабораторная №1</a>
+        </div>
     </nav>
-    <div class="section row">
-        <p class="col"><b>Лабораторная работа 1</b></p>
-        <p class="col push-s1">Вариант 15</p>
-        <p class="col s12">Задача: Из нескольких введенных значений определить количество правильно введенных чисел.</p>
-    </div>
-    <div class="divider"></div>
-    <div class="container">
-        <div class="section">
+    <div class="row flow-text">
+        <div class="col s3">
+            <div class="section">
+                <h4>Лабораторная №1</h4>
+                <h5>Вариант 15</h5>
+                <h5>Руслан Фадеев</h5>
+            </div>
+            <div class="divider"></div>
+            <div class="section">
+                <h5>Задача:</h5>
+                Из нескольких введенных значений определить количество правильно введенных чисел.
+            </div>
+        </div>
+        <div class="col s9">
             <form id="input-form" class="row">
-                <p class="col">Введите новое число:</p>
-                <input type="text" id="input-field" class="col s4" />
-                <p id="input-error-label" class="col s5">
-                    Введённая строка - не число.
-                    </label>
+                <div class="col s12">
+                    Введите новое число:
+                    <div class="input-field inline">
+                        <input id="input-field" type="text" />
+                    </div>
+                    <span id="input-error-label" class="hide red-text">
+                        Введённая строка - не число.
+                    </span>
+                </div>
             </form>
+            <div class="row">
+                <ul id="output-list" class="collection with-header col s12">
+                    <li class="collection-header">Введённые числа:</li>
+                </ul>
+            </div>
+            <p class="col">
+                <b>Количество введённых чисел:</b>
+                <span id="output-count"> 0 </span>
+            </p>
         </div>
-        <div class="divider"></div>
-        <div class="section">
-            <p>Список введённых чисел:</p>
-            <ol id="output-list"></ol>
-            Количество введённых чисел:
-            <div id="output-count"> 0 </div>
-        </div>
-    </div>
-    <div class="divider"></div>
-    <div class="section row">
-        <p class="col s12">Руслан Фадеев</p>
     </div>
 
     <template id="output-element-template">
-        <li class="output-element"></li>
+        <li class="output-element col s12 collection-item"></li>
     </template>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
