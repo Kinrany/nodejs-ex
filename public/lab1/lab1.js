@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
 
     outputList.on('DOMNodeInserted DOMNodeRemoved', function () {
-        var numbers = outputList.children().length;
+        var numbers = outputList.children('.output-element').length;
         outputCount.text(numbers);
     });
 });
