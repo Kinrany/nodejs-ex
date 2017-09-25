@@ -58,22 +58,8 @@ var initDb = function (callback) {
   });
 };
 
-app.get('/', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function (err) { });
-  }
-  if (db) {
-    var col = db.collection('counts');
-    // Create a document with request IP and current time of request
-    col.insert({ ip: req.ip, date: Date.now() });
-    col.count(function (err, count) {
-      res.render('index.html', { pageCountMessage: count, dbInfo: dbDetails });
-    });
-  } else {
-    res.render('index.html', { pageCountMessage: null });
-  }
+app.get('/', function(request, response) {
+  response.render('index2.html');
 });
 
 app.get('/pagecount', function (req, res) {
@@ -103,26 +89,10 @@ app.get('/index2', function (request, response) {
   response.render('index2.html');
 });
 
+app.get('/help', serveDefaultHelpPage);
+
 app.get('/lab2/questions.json', function (request, response) {
-  const data = {
-    questions: [
-      {
-        question: "А вы бывали на Таити?",
-        answers: [
-          "Да",
-          "Нет"
-        ]
-      },
-      {
-        question: "Честно?",
-        answers: [
-          "Да",
-          "Честно",
-          "Следующий вопрос"
-        ]
-      }
-    ]
-  };
+  const data = lab2GenerateQuestionsJSON();
 
   response.setHeader('content-type', 'application/json');
   response.send(JSON.stringify(data));
@@ -142,3 +112,43 @@ app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
 module.exports = app;
+
+function serveDefaultHelpPage(request, response) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function (err) { });
+  }
+  if (db) {
+    var col = db.collection('counts');
+    // Create a document with request IP and current time of request
+    col.insert({ ip: request.ip, date: Date.now() });
+    col.count(function (err, count) {
+      response.render('help.html', { pageCountMessage: count, dbInfo: dbDetails });
+    });
+  } else {
+    response.render('help.html', { pageCountMessage: null });
+  }
+}
+
+function lab2GenerateQuestionsJSON() {
+  return {
+    questions: [
+      {
+        question: "А вы бывали на Таити?",
+        answers: [
+          "Да",
+          "Нет"
+        ]
+      },
+      {
+        question: "Честно?",
+        answers: [
+          "Да",
+          "Честно",
+          "Следующий вопрос"
+        ]
+      }
+    ]
+  };
+}
