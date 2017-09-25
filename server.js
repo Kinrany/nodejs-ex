@@ -58,7 +58,7 @@ var initDb = function (callback) {
   });
 };
 
-app.get('/', function(request, response) {
+app.get('/', function (request, response) {
   response.render('index2.html');
 });
 
@@ -91,13 +91,6 @@ app.get('/index2', function (request, response) {
 
 app.get('/help', serveDefaultHelpPage);
 
-app.get('/lab2/questions.json', function (request, response) {
-  const data = lab2GenerateQuestionsJSON();
-
-  response.setHeader('content-type', 'application/json');
-  response.send(JSON.stringify(data));
-});
-
 // error handling
 app.use(function (err, req, res, next) {
   console.error(err.stack);
@@ -129,26 +122,4 @@ function serveDefaultHelpPage(request, response) {
   } else {
     response.render('help.html', { pageCountMessage: null });
   }
-}
-
-function lab2GenerateQuestionsJSON() {
-  return {
-    questions: [
-      {
-        question: "А вы бывали на Таити?",
-        answers: [
-          "Да",
-          "Нет"
-        ]
-      },
-      {
-        question: "Честно?",
-        answers: [
-          "Да",
-          "Честно",
-          "Следующий вопрос"
-        ]
-      }
-    ]
-  };
 }
