@@ -99,6 +99,10 @@ app.get('/lab2', function (request, response) {
   response.render('lab2.html');
 });
 
+app.get('/index2', function (request, response) {
+  response.render('index2.html');
+});
+
 app.get('/lab2/questions.json', function (request, response) {
   const data = {
     questions: [
