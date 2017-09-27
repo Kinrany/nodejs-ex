@@ -5,13 +5,15 @@ const dataDeferred = $.getJSON(questionsJsonUrl);
 const $g = {
     inputQuestionTemplate: undefined,
     inputForm: undefined,
-    inputQuestions: undefined
+    inputQuestions: undefined,
+    inputDownloadingLabel: undefined
 };
 
 $(document).ready(function () {
     $g.inputQuestionTemplate = $("#input-question-template");
     $g.inputForm = $("#input-form");
     $g.inputQuestions = $("#input-questions");
+    $g.inputDownloadingLabel = $g.inputForm.find('.hide-on-form-load');
     
     dataDeferred.done(loadQuestions).done(function () {
         $g.inputForm.find("button").click(submitForm);
@@ -32,6 +34,9 @@ function loadQuestions(data) {
 
     // http://materializecss.com/forms.html#select-initialization
     $('select').material_select();
+
+    $g.inputDownloadingLabel.addClass('hide');
+console.log($g.inputDownloadingLabel);
 }
 
 function appendQuestion(parent, question, answers) {
