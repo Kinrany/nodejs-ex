@@ -29,7 +29,7 @@ function submitForm() {
     $.post("submitForm", jsonData, function success() {
             console.log("Success.");
         })
-        .error(function() {
+        .fail(function() {
             console.log("Error.");
         });
     console.log("Form posted: " + JSON.stringify(jsonData));
