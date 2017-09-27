@@ -26,8 +26,7 @@ function submitForm() {
         jsonData.answers[i] = $(e).val();
     });
 
-    $.post("submitForm", jsonData)
-        .success(function() {
+    $.post("submitForm", jsonData, function success() {
             console.log("Success.");
         })
         .error(function() {
