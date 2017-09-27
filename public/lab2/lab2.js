@@ -8,10 +8,14 @@ $(document).ready(function () {
     inputQuestionTemplate = $("#input-question-template").html();
     inputForm = $("#input-form");
     
-    dataDeferred.done(loadQuestions).done(function() {
-        $.post("submitForm", "hello world");
+    dataDeferred.done(loadQuestions).done(function () {
+        inputForm.find("button").click(submitForm);
     });
 });
+
+function submitForm() {
+    $.post("submitForm", "hello world");
+}
 
 function loadQuestions(data) {
     const {questions} = data;
