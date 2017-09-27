@@ -85,6 +85,10 @@ app.get('/lab2', function (request, response) {
   response.render('lab2.html');
 });
 
+app.post('/lab2/submitForm', function (request, response) {
+  response.sendStatus(200);
+});
+
 app.get('/index2', function (request, response) {
   response.render('index2.html');
 });
