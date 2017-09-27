@@ -36,7 +36,6 @@ function loadQuestions(data) {
     $('select').material_select();
 
     $g.inputDownloadingLabel.addClass('hide');
-console.log($g.inputDownloadingLabel);
 }
 
 function appendQuestion(parent, question, answers) {
