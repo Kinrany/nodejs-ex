@@ -1,15 +1,18 @@
-let questionsJsonUrl = "questions.json";
-let dataDeferred = $.getJSON(questionsJsonUrl);
+const questionsJsonUrl = "questions.json";
+const dataDeferred = $.getJSON(questionsJsonUrl);
 
-let inputQuestionTemplate;
-let inputForm;
+// global namespace for jQuery objects
+const $g = {
+    inputQuestionTemplate: undefined,
+    inputForm: undefined
+};
 
 $(document).ready(function () {
-    inputQuestionTemplate = $("#input-question-template").html();
-    inputForm = $("#input-form");
+    $g.inputQuestionTemplate = $("#input-question-template");
+    $g.inputForm = $("#input-form");
     
     dataDeferred.done(loadQuestions).done(function () {
-        inputForm.find("button").click(submitForm);
+        $g.inputForm.find("button").click(submitForm);
     });
 });
 
@@ -22,7 +25,7 @@ function loadQuestions(data) {
 
     for (let qi = 0; qi < questions.length; ++qi) {
         let { question, answers } = questions[qi];
-        appendQuestion(inputForm, question, answers);
+        appendQuestion($g.inputForm, question, answers);
     }
 
     // http://materializecss.com/forms.html#select-initialization
@@ -30,7 +33,7 @@ function loadQuestions(data) {
 }
 
 function appendQuestion(parent, question, answers) {
-    parent.append(inputQuestionTemplate);
+    parent.append($g.inputQuestionTemplate.html());
     let questionItem = parent.children(".input-question-item:last-child");
 
     questionItem.find(".input-question-label").text(question);
