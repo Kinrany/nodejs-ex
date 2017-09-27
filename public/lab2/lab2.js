@@ -3,17 +3,16 @@ const dataDeferred = $.getJSON(questionsJsonUrl);
 
 // global namespace for jQuery objects
 const $g = {
-    inputQuestionTemplate: undefined,
-    inputForm: undefined,
-    inputQuestions: undefined,
-    inputDownloadingLabel: undefined
+    load: function() {
+        $g.inputQuestionTemplate = $("#input-question-template");
+        $g.inputForm = $("#input-form");
+        $g.inputQuestions = $("#input-questions");
+        $g.inputDownloadingLabel = $g.inputForm.find('.hide-on-form-load');
+    }
 };
 
 $(document).ready(function () {
-    $g.inputQuestionTemplate = $("#input-question-template");
-    $g.inputForm = $("#input-form");
-    $g.inputQuestions = $("#input-questions");
-    $g.inputDownloadingLabel = $g.inputForm.find('.hide-on-form-load');
+    $g.load();
     
     dataDeferred.done(loadQuestions).done(function () {
         $g.inputForm.find("button").click(submitForm);
@@ -22,6 +21,7 @@ $(document).ready(function () {
 
 function submitForm() {
     $.post("submitForm", "hello world");
+    console.log($g.inputNameField.val());
 }
 
 function loadQuestions(data) {
