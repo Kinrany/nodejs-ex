@@ -4,12 +4,14 @@ const dataDeferred = $.getJSON(questionsJsonUrl);
 // global namespace for jQuery objects
 const $g = {
     inputQuestionTemplate: undefined,
-    inputForm: undefined
+    inputForm: undefined,
+    inputQuestions: undefined
 };
 
 $(document).ready(function () {
     $g.inputQuestionTemplate = $("#input-question-template");
     $g.inputForm = $("#input-form");
+    $g.inputQuestions = $("#input-questions");
     
     dataDeferred.done(loadQuestions).done(function () {
         $g.inputForm.find("button").click(submitForm);
@@ -25,7 +27,7 @@ function loadQuestions(data) {
 
     for (let qi = 0; qi < questions.length; ++qi) {
         let { question, answers } = questions[qi];
-        appendQuestion($g.inputForm, question, answers);
+        appendQuestion($g.inputQuestions, question, answers);
     }
 
     // http://materializecss.com/forms.html#select-initialization
