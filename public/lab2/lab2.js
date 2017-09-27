@@ -28,13 +28,13 @@ function submitForm() {
 
     $.post("submitForm", jsonData, function success() {
             console.log("Success.");
-            $('#success-label').toggleClass('hide', true);
-            $('#failure-label').toggleClass('hide', false);
+            $('#success-label').toggleClass('hide', false);
+            $('#failure-label').toggleClass('hide', true);
         })
         .fail(function() {
             console.log("Error.");
-            $('#success-label').toggleClass('hide', false);
-            $('#failure-label').toggleClass('hide', true);
+            $('#success-label').toggleClass('hide', true);
+            $('#failure-label').toggleClass('hide', false);
         });
     console.log("Form posted: " + JSON.stringify(jsonData));
 }
