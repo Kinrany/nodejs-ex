@@ -67,18 +67,13 @@ app.get('/', function (request, response) {
 });
 
 app.get('/pagecount', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function (err) { });
-  }
-  if (db) {
+  withDB(function err() {
+    res.send('{ pageCount: -1 }');
+  }, function callback(db) {
     db.collection('counts').count(function (err, count) {
       res.send('{ pageCount: ' + count + '}');
     });
-  } else {
-    res.send('{ pageCount: -1 }');
-  }
+  })
 });
 
 app.get('/lab1', function (request, response) {
@@ -90,8 +85,18 @@ app.get('/lab2', function (request, response) {
 });
 
 app.post('/lab2/submitForm', function (request, response) {
-  console.log(request.body);
-  response.sendStatus(200);
+  console.log("JSON: " + JSON.stringify(request.body));
+
+  let status = 500;
+  try {
+    status = saveFormSubmission(request.body);
+  }
+  catch (e) {
+    console.log("Failed to parse submission: " + e);
+  }
+
+  console.log("Responding with status " + status);
+  response.sendStatus(status);
 });
 
 app.get('/index2', function (request, response) {
@@ -116,19 +121,80 @@ console.log('Server running on http://%s:%s', ip, port);
 module.exports = app;
 
 function serveDefaultHelpPage(request, response) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function (err) { });
-  }
-  if (db) {
+  withDB(function err() {
+    response.render('help.html', { pageCountMessage: null });
+  }, function callback(db) {
     var col = db.collection('counts');
     // Create a document with request IP and current time of request
     col.insert({ ip: request.ip, date: Date.now() });
     col.count(function (err, count) {
       response.render('help.html', { pageCountMessage: count, dbInfo: dbDetails });
     });
-  } else {
-    response.render('help.html', { pageCountMessage: null });
+  });
+}
+
+function saveFormSubmission(submission) {
+  const data = {};
+
+  try {
+    let {name: sName, answers: sAnswers} = submission;
+    
+    if (typeof(sName) !== "string" || sName.trim() === "") {
+      console.log("Name: " + sName);
+      throw "invalid name";
+    }
+  
+    const {questions} = require('./public/lab2/questions.json');
+    console.log(JSON.stringify(questions));
+  
+    data.name = sName.trim();
+    data.answers = [];
+    data.date = Date.now();
+  
+    for (let i = 0; i < questions.length; ++i) {
+      let question = questions[i];
+      let sAnswer = +sAnswers[i];
+      
+      if (!(0 <= sAnswer && sAnswer < question.answers.length)) {
+        throw "invalid answer";
+      }
+  
+      data.answers[i] = sAnswer;
+    }
+  }
+  catch (e) {
+    console.log("Invalid submission: " + e);
+    return 400;
+  }
+
+  let db_fail = true;
+
+  withDB(function err() {
+    db_fail = true;
+  }, 
+  function callback(db) {
+    let collection = db.collection('form submissions');
+    collection.insertOne(data, function(err, result) {
+      assert.equal(err, null);
+      assert.equal(result.acknowledged, true);
+    });
+    db_fail = false;
+  });
+
+  return (db_fail ? 500 : 200);
+}
+
+function withDB(err, callback) {
+  // try to initialize the db on every request if it's not already
+  // initialized.
+  if (!db) {
+    initDb(function (err) { });
+  } 
+  if (db) {
+    return callback(db);
+  }
+  else {
+    console.log("No database.");
+    return err();
   }
 }
