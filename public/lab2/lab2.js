@@ -28,9 +28,13 @@ function submitForm() {
 
     $.post("submitForm", jsonData, function success() {
             console.log("Success.");
+            $('#success-label').toggleClass(true);
+            $('#failure-label').toggleClass(false);
         })
         .fail(function() {
             console.log("Error.");
+            $('#success-label').toggleClass(false);
+            $('#failure-label').toggleClass(true);
         });
     console.log("Form posted: " + JSON.stringify(jsonData));
 }
