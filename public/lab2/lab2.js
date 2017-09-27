@@ -8,6 +8,7 @@ const $g = {
         $g.inputForm = $("#input-form");
         $g.inputQuestions = $("#input-questions");
         $g.inputDownloadingLabel = $g.inputForm.find('.hide-on-form-load');
+        $g.inputNameField = $("#input-name");
     }
 };
 
@@ -20,8 +21,14 @@ $(document).ready(function () {
 });
 
 function submitForm() {
-    $.post("submitForm", "hello world");
+    let jsonData = {name: $g.inputNameField.val(), answers: []};
+    $g.inputForm.find('select').map((i, e) => {
+        jsonData.answers[i] = $(e).val();
+    });
+
+    $.post("submitForm", jsonData);
     console.log("Form posted.");
+    console.log("JSON: " + JSON.stringify(jsonData));
 }
 
 function loadQuestions(data) {
@@ -49,18 +56,19 @@ function appendQuestion(parent, question, answers) {
     appendOptionDefault(questionSelect, "Выберите вариант");
     
     for (let ai = 0; ai < answers.length; ++ai) {
-        appendOption(questionSelect, answers[ai]);
+        appendOption(questionSelect, answers[ai], ai);
     }
 }
 
-function appendOption(parent, answer) {
+function appendOption(parent, answer, value) {
     let option = $("<option>");
     option.text(answer);
+    option.val(value);
     option.appendTo(parent);
     return option;
 }
 
-function appendOptionDefault(parent, answer) {
-    let option = appendOption(parent, answer);
+function appendOptionDefault(parent, answer, value) {
+    let option = appendOption(parent, answer, value);
     option.addClass('disabled selected');
 }
