@@ -26,9 +26,14 @@ function submitForm() {
         jsonData.answers[i] = $(e).val();
     });
 
-    $.post("submitForm", jsonData);
-    console.log("Form posted.");
-    console.log("JSON: " + JSON.stringify(jsonData));
+    $.post("submitForm", jsonData)
+        .done(function() {
+            console.log("Success.");
+        })
+        .error(function() {
+            console.log("Errror.");
+        });
+    console.log("Form posted: " + JSON.stringify(jsonData));
 }
 
 function loadQuestions(data) {
