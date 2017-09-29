@@ -3,8 +3,7 @@ const express = require('express'),
   app = express(),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
-  gitLastCommit = require('git-last-commit'),
-  robots = require('express-robots-txt');
+  gitLastCommit = require('git-last-commit');
 
 Object.assign = require('object-assign');
 
@@ -17,8 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(express.static('public'));
-
-app.use(robots('robots.txt'));
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -142,10 +139,6 @@ app.get('/version', function (request, response) {
   gitLastCommit.getLastCommit(function (err, commit) {
     response.status(200).json({version: commit.shortHash});
   })
-})
-
-app.get('/robots.txt', function (request, response) {
-  response.sendFile('robots.txt');
 })
 
 // error handling
