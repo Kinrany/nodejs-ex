@@ -7,7 +7,9 @@ const express = require('express'),
 
 Object.assign = require('object-assign');
 
-require('node-env-file')('./process.env');
+if (!(process.env.OPENSHIFT_APP_UUID)) {
+  require('node-env-file')('./process.env');
+}
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'));
