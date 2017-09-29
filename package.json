@@ -14,7 +14,6 @@
     "mocha": "^2.4.5",
     "mongodb": "^2.1.16",
     "morgan": "^1.7.0",
-    "node-env-file": "^0.1.8",
     "object-assign": "4.1.0",
     "typescript": "^2.5.3"
   },

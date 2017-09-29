@@ -7,10 +7,6 @@ const express = require('express'),
 
 Object.assign = require('object-assign');
 
-if (!(process.env.OPENSHIFT_APP_UUID)) {
-  require('node-env-file')('./process.env');
-}
-
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'));
 
@@ -21,7 +17,7 @@ app.use(express.static('public'));
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-  mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+  mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || "mongodb://localhost:27017/local",
   mongoURLLabel = "";
 
 if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
