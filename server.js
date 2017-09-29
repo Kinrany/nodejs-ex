@@ -4,7 +4,9 @@ const express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser');
 
-Object.assign = require('object-assign')
+Object.assign = require('object-assign');
+
+require('node-env-file')('./process.env');
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'));
@@ -87,16 +89,43 @@ app.get('/lab2', function (request, response) {
 app.post('/lab2/submitForm', function (request, response) {
   console.log("JSON: " + JSON.stringify(request.body));
 
-  let status = 500;
   try {
-    status = saveFormSubmission(request.body);
+    status = saveFormSubmission(request.body, (status) => {
+      console.log("Responding with status " + status);
+      response.sendStatus(status);
+    });
   }
   catch (e) {
     console.log("Failed to parse submission: " + e);
+    response.sendStatus(500);
   }
+});
 
-  console.log("Responding with status " + status);
-  response.sendStatus(status);
+app.get('/lab2/getResults', function (request, response) {
+  withDB(function err() {
+    response.sendStatus(500);
+  }, function success(db) {
+    getFormSubmissionStats(function(stats) {
+      let data = {answers: {}};
+
+      stats.forEach(value => {
+        switch (value._id) {
+        case 'count':
+          data.count = value.value;
+          return;
+        case 'date':
+          data.firstDate = new Date(value.value.first);
+          data.lastDate = new Date(value.value.last);
+          return;
+        default:
+          let answerId = value._id.replace("answer_", "");
+          data.answers[answerId] = value.value;
+        }
+      });
+
+      response.status(200).json(data);
+    });
+  });
 });
 
 app.get('/index2', function (request, response) {
@@ -133,32 +162,31 @@ function serveDefaultHelpPage(request, response) {
   });
 }
 
-function saveFormSubmission(submission) {
+function saveFormSubmission(submission, resultCallback) {
   const data = {};
 
   try {
-    let {name: sName, answers: sAnswers} = submission;
-    
-    if (typeof(sName) !== "string" || sName.trim() === "") {
+    let { name: sName, answers: sAnswers } = submission;
+
+    if (typeof (sName) !== "string" || sName.trim() === "") {
       console.log("Name: " + sName);
       throw "invalid name";
     }
-  
-    const {questions} = require('./public/lab2/questions.json');
-    console.log(JSON.stringify(questions));
-  
+
+    const { questions } = require('./public/lab2/questions.json');
+
     data.name = sName.trim();
     data.answers = [];
     data.date = Date.now();
-  
+
     for (let i = 0; i < questions.length; ++i) {
       let question = questions[i];
       let sAnswer = +sAnswers[i];
-      
+
       if (!(0 <= sAnswer && sAnswer < question.answers.length)) {
         throw "invalid answer";
       }
-  
+
       data.answers[i] = sAnswer;
     }
   }
@@ -167,21 +195,20 @@ function saveFormSubmission(submission) {
     return 400;
   }
 
-  let db_fail = true;
-
   withDB(function err() {
-    db_fail = true;
-  }, 
-  function callback(db) {
+    console.log("No database");
+    resultCallback(500);
+  }, function callback(db) {
     let collection = db.collection('form submissions');
-    collection.insertOne(data, function(err, result) {
-      assert.equal(err, null);
-      assert.equal(result.acknowledged, true);
-    });
-    db_fail = false;
+    try {
+      collection.insertOne(data);
+      resultCallback(200);
+    }
+    catch (e) {
+      console.log("Error: " + e);
+      resultCallback(500);
+    }
   });
-
-  return (db_fail ? 500 : 200);
 }
 
 function withDB(err, callback) {
@@ -189,7 +216,7 @@ function withDB(err, callback) {
   // initialized.
   if (!db) {
     initDb(function (err) { });
-  } 
+  }
   if (db) {
     return callback(db);
   }
@@ -197,4 +224,65 @@ function withDB(err, callback) {
     console.log("No database.");
     return err();
   }
+}
+
+function getFormSubmissionStats(callback) {
+  let collection = db.collection('form submissions');
+
+  let map = function () {
+    emit("count", 1);
+
+    let date = this.date;
+    emit("date", { first: date, last: date });
+
+    for (let i = 0; i < this.answers.length; ++i) {
+      let answer = {};
+      answer[this.answers[i]] = 1;
+      emit("answer_" + i, answer);
+    }
+    
+  }
+
+  let reduce = function (key, values) {
+
+    switch (key) {
+      case "count":
+        let count = 0;
+        for (let i = 0; i < values.length; ++i) {
+          count += values[i];
+        }
+        return count;
+
+      case "date":
+        let date = {
+          first: Date.now(),
+          last: new Date(-8640000000000000)
+        }
+        values.forEach(value => {
+          if (value.first < date.first) {
+            date.first = value.first;
+          }
+          if (date.last < value.last) {
+            date.last = value.last;
+          }
+        });
+        return date;
+
+      default:
+        let reduced = {}
+        values.forEach(value => {
+          for (let option_id in value) {
+            if (!(option_id in reduced)) {
+              reduced[option_id] = 0;
+            }
+            reduced[option_id] += value[option_id];
+          }
+        });
+        return reduced;
+    }
+    
+  }
+
+  let requestResult = collection.mapReduce(map, reduce, {out: {inline: 1}});
+  requestResult.then(callback)
 }
