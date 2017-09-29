@@ -21,6 +21,7 @@ var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
   mongoURLLabel = "";
 
 if (!(process.env.OPENSHIFT_APP_UUID)) {
+  console.log("Setting mongoURL to local path.");
   mongoURL = "mongodb://localhost:27017/local";
 }
 
