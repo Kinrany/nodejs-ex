@@ -10,6 +10,7 @@
     "dotenv": "^4.0.0",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
+    "express-robots-txt": "^0.2.0",
     "git-last-commit": "^0.3.0",
     "mocha": "^2.4.5",
     "mongodb": "^2.1.16",

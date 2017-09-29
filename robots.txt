@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+Allow: /lab1
+Allow: /lab2
