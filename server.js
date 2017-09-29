@@ -265,7 +265,7 @@ function getFormSubmissionStats(callback) {
         let date = {
           first: Date.now(),
           last: new Date(-8640000000000000)
-        }
+        };
         values.forEach(value => {
           if (value.first < date.first) {
             date.first = value.first;
