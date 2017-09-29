@@ -2,7 +2,8 @@
 const express = require('express'),
   app = express(),
   morgan = require('morgan'),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  gitLastCommit = require('git-last-commit');
 
 Object.assign = require('object-assign');
 
@@ -133,6 +134,12 @@ app.get('/index2', function (request, response) {
 });
 
 app.get('/help', serveDefaultHelpPage);
+
+app.get('/version', function (request, response) {
+  gitLastCommit.getLastCommit(function (err, commit) {
+    response.status(200).json({version: commit.shortHash});
+  })
+})
 
 // error handling
 app.use(function (err, req, res, next) {
