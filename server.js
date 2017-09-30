@@ -243,11 +243,11 @@ function getFormSubmissionStats(error, callback) {
   let map = function () {
     emit("count", 1);
 
-    let date = this.date;
+    var date = this.date;
     emit("date", { first: date, last: date });
 
-    for (let i = 0; i < this.answers.length; ++i) {
-      let answer = {};
+    for (var i = 0; i < this.answers.length; ++i) {
+      var answer = {};
       answer[this.answers[i]] = 1;
       emit("answer_" + i, answer);
     }
@@ -258,14 +258,14 @@ function getFormSubmissionStats(error, callback) {
 
     switch (key) {
       case "count":
-        let count = 0;
-        for (let i = 0; i < values.length; ++i) {
+        var count = 0;
+        for (var i = 0; i < values.length; ++i) {
           count += values[i];
         }
         return count;
 
       case "date":
-        let date = {
+        var date = {
           first: Date.now(),
           last: new Date(-8640000000000000)
         };
@@ -280,9 +280,9 @@ function getFormSubmissionStats(error, callback) {
         return date;
 
       default:
-        let reduced = {};
+        var reduced = {};
         values.forEach(value => {
-          for (let option_id in value) {
+          for (var option_id in value) {
             if (!(option_id in reduced)) {
               reduced[option_id] = 0;
             }
@@ -293,13 +293,6 @@ function getFormSubmissionStats(error, callback) {
     }
 
   }
-
-  map = () => emit("hello", 1);
-  reduce = (key, values) => {
-    var reduced = 0;
-    //values.forEach(value => reduced += value);
-    return reduced; 
-  };
 
   let requestResult = collection.mapReduce(map, reduce, { out: { inline: 1 } });
   requestResult.then(callback).catch(error);
