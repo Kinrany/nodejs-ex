@@ -210,7 +210,7 @@ function saveFormSubmission(submission, resultCallback) {
     console.log("No database");
     resultCallback(500);
   }, function callback(db) {
-    let collection = db.collection('form submissions');
+    let collection = db.collection('form_submissions');
     try {
       collection.insertOne(data);
       resultCallback(200);
@@ -238,7 +238,7 @@ function withDB(err, callback) {
 }
 
 function getFormSubmissionStats(error, callback) {
-  let collection = db.collection('form submissions');
+  let collection = db.collection('form_submissions');
 
   let map = function () {
     emit("count", 1);
