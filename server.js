@@ -296,7 +296,7 @@ function getFormSubmissionStats(error, callback) {
 
   map = () => emit("hello", 1);
   reduce = (key, values) => {
-    let reduced = 0;
+    var reduced = 0;
     //values.forEach(value => reduced += value);
     return reduced; 
   };
