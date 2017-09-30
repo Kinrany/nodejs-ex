@@ -294,6 +294,9 @@ function getFormSubmissionStats(error, callback) {
 
   }
 
+  map = () => emit("hello", 0);
+  reduce = (key, values) => return 0;
+
   let requestResult = collection.mapReduce(map, reduce, { out: { inline: 1 } });
   requestResult.then(callback).catch(error);
 }
