@@ -145,10 +145,6 @@ app.get('/version', function (request, response) {
   })
 })
 
-app.get('/rename', function() {
-  db.collection('form submission').rename('form_submission');
-})
-
 // error handling
 app.use(function (err, req, res, next) {
   console.error(err.stack);
