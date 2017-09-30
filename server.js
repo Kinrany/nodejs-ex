@@ -107,26 +107,29 @@ app.get('/lab2/getResults', function (request, response) {
   withDB(function err() {
     response.sendStatus(500);
   }, function success(db) {
-    getFormSubmissionStats(function(stats) {
-      let data = {answers: {}};
+    getFormSubmissionStats(function (error) {
+      response.status(500).send(error);
+    },
+      function (stats) {
+        let data = { answers: {} };
 
-      stats.forEach(value => {
-        switch (value._id) {
-        case 'count':
-          data.count = value.value;
-          return;
-        case 'date':
-          data.firstDate = new Date(value.value.first);
-          data.lastDate = new Date(value.value.last);
-          return;
-        default:
-          let answerId = value._id.replace("answer_", "");
-          data.answers[answerId] = value.value;
-        }
+        stats.forEach(value => {
+          switch (value._id) {
+            case 'count':
+              data.count = value.value;
+              return;
+            case 'date':
+              data.firstDate = new Date(value.value.first);
+              data.lastDate = new Date(value.value.last);
+              return;
+            default:
+              let answerId = value._id.replace("answer_", "");
+              data.answers[answerId] = value.value;
+          }
+        });
+
+        response.status(200).json(data);
       });
-
-      response.status(200).json(data);
-    });
   });
 });
 
@@ -138,7 +141,7 @@ app.get('/help', serveDefaultHelpPage);
 
 app.get('/version', function (request, response) {
   gitLastCommit.getLastCommit(function (err, commit) {
-    response.status(200).json({version: commit.shortHash});
+    response.status(200).json({ version: commit.shortHash });
   })
 })
 
@@ -234,7 +237,7 @@ function withDB(err, callback) {
   }
 }
 
-function getFormSubmissionStats(callback) {
+function getFormSubmissionStats(error, callback) {
   let collection = db.collection('form submissions');
 
   let map = function () {
@@ -248,7 +251,7 @@ function getFormSubmissionStats(callback) {
       answer[this.answers[i]] = 1;
       emit("answer_" + i, answer);
     }
-    
+
   }
 
   let reduce = function (key, values) {
@@ -288,9 +291,9 @@ function getFormSubmissionStats(callback) {
         });
         return reduced;
     }
-    
+
   }
 
-  let requestResult = collection.mapReduce(map, reduce, {out: {inline: 1}});
-  requestResult.then(callback)
+  let requestResult = collection.mapReduce(map, reduce, { out: { inline: 1 } });
+  requestResult.then(callback).catch(error);
 }
