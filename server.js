@@ -240,7 +240,7 @@ function withDB(err, callback) {
 function getFormSubmissionStats(error, callback) {
   let collection = db.collection('form_submissions');
 
-  let map = `function () {
+  let map = function () {
     emit("count", 1);
 
     let date = this.date;
@@ -252,9 +252,9 @@ function getFormSubmissionStats(error, callback) {
       emit("answer_" + i, answer);
     }
 
-  };`;
+  };
 
-  let reduce = `function (key, values) {
+  let reduce = function (key, values) {
 
     switch (key) {
       case "count":
@@ -291,7 +291,8 @@ function getFormSubmissionStats(error, callback) {
         });
         return reduced;
     }
-  };`;
+
+  }
 
   let requestResult = collection.mapReduce(map, reduce, { out: { inline: 1 } });
   requestResult.then(callback).catch(error);
