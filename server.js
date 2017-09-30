@@ -252,7 +252,7 @@ function getFormSubmissionStats(error, callback) {
       emit("answer_" + i, answer);
     }
 
-  }
+  };
 
   let reduce = function (key, values) {
 
@@ -280,7 +280,7 @@ function getFormSubmissionStats(error, callback) {
         return date;
 
       default:
-        let reduced = {}
+        let reduced = {};
         values.forEach(value => {
           for (let option_id in value) {
             if (!(option_id in reduced)) {
