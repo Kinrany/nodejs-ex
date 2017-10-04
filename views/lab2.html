@@ -1,4 +1,4 @@
-<html>
+<html lang="ru">
 
 <head>
     <title>Сетевое программирование - Лабораторная работа 2</title>
@@ -30,46 +30,54 @@
             <div class="divider"></div>
         </div>
         <div class="col s12 m7 l8">
-            <form id="input-form" class="row" onsubmit="return false;">
-                <div id="input-questions" class="col s12">
-                    <!-- Вопросы -->
-                    <span class="hide-on-form-load grey-text">(загрузка вопросов)</span>
-                </div>
-                <div class="col s12">
-                    <!-- Имя пользователя -->
-                    Имя:
-                    <div class="input-field inline">
-                        <input id="input-name" type="text" />
+            <div class="row">
+                <form id="input-form" onsubmit="return false;">
+                    <div id="input-questions" class="col s12">
+                        <!-- Вопросы -->
+                        <span class="hide-on-form-load grey-text">(загрузка вопросов)</span>
                     </div>
-                </div>
-                <div class="col s12">
-                    <div class="row">
-                        <div class="col">
-                            <!-- Кнопка отправки -->
-                            <button type="submit" class="btn waves-effect waves-light">Отправить</button>
-                        </div>
-                        <div class="col">
-                            <!-- Результат отправки -->
-                            <span id="success-label" class="green-text hide">Успех!</span>
-                            <span id="failure-label" class="red-text hide">Неудача!</span>
+                    <div class="col s12">
+                        <!-- Имя пользователя -->
+                        Имя:
+                        <div class="input-field inline">
+                            <input id="input-name" type="text" />
                         </div>
                     </div>
-                </div>
-                <div class="col s12">
-
-                </div>
+                    <div class="col s12">
+                        <div class="row">
+                            <div class="col">
+                                <!-- Кнопка отправки -->
+                                <button type="submit" class="btn waves-effect waves-light">Отправить</button>
+                            </div>
+                            <div class="col">
+                                <!-- Результат отправки -->
+                                <span id="success-label" class="green-text hide">Успех!</span>
+                                <span id="failure-label" class="red-text hide">Неудача!</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 <div class="col s12">
                     <!-- Вывод статистики -->
                     <p id="stats-waiting-label" class="grey-text">(отправьте для просмотра результатов)</p>
                     <p id="stats-loading-label" class="grey-text hide">(загрузка)</p>
                     <div id="stats-result" class="hide">
-                        <p id="stats-count">DEBUG: stats-count</p>
-                        <p id="stats-first-date">DEBUG: stats-first-date</p>
-                        <p id="stats-last-date">DEBUG: stats-last-date</p>
+                        <p>
+                            Количество отправок:
+                            <span id="stats-count">DEBUG: stats-count</span>
+                        </p>
+                        <p>
+                            Дата первой отправки:
+                            <time id="stats-first-date">DEBUG: stats-first-date</time>
+                        </p>
+                        <p>
+                            Дата последней отправки:
+                            <time id="stats-last-date">DEBUG: stats-last-date</time>
+                        </p>
                         <ul id="stats-questions"></ul>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -87,6 +95,7 @@
     </template>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="lab2.js"></script>
 </body>

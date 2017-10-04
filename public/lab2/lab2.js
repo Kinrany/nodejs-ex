@@ -1,4 +1,5 @@
 const questionsJsonUrl = "questions.json";
+const statisticsJsonUrl = "getResults";
 const dataDeferred = $.getJSON(questionsJsonUrl);
 
 // global namespace for jQuery objects
@@ -9,6 +10,16 @@ const $g = {
         $g.inputQuestions = $("#input-questions");
         $g.inputDownloadingLabel = $g.inputForm.find('.hide-on-form-load');
         $g.inputNameField = $("#input-name");
+        $g.successLabel = $("#success-label");
+        $g.failureLabel = $("#failure-label");
+        $g.statsWaitingLabel = $("#stats-waiting-label");
+        $g.statsLoadingLabel = $("#stats-loading-label");
+        $g.statsResult = $("#stats-result");
+        $g.statsQuestionTemplate = $("#statistics-question-template");
+        $g.statsQuestions = $("#stats-questions");
+        $g.statsCount = $("#stats-count");
+        $g.statsFirstDate = $("#stats-first-date");
+        $g.statsLastDate = $("#stats-last-date");
     }
 };
 
@@ -28,15 +39,44 @@ function submitForm() {
 
     $.post("submitForm", jsonData, function success() {
         console.log("Success.");
-        $('#success-label').toggleClass('hide', false);
-        $('#failure-label').toggleClass('hide', true);
+        $g.successLabel.toggleClass('hide', false);
+        $g.failureLabel.toggleClass('hide', true);
+
+        console.log("Loading statistics");
+        $g.statsWaitingLabel.toggleClass('hide', true);
+        $g.statsLoadingLabel.toggleClass('hide', false);
+        $.getJSON(statisticsJsonUrl)
+            .done(loadStatistics)
+            .catch(function(message) {
+                console.log("Failed to load statistics");
+                console.log(message);
+            });
     })
         .fail(function () {
             console.log("Error.");
-            $('#success-label').toggleClass('hide', true);
-            $('#failure-label').toggleClass('hide', false);
+            $g.successLabel.toggleClass('hide', true);
+            $g.failureLabel.toggleClass('hide', false);
         });
     console.log("Form posted: " + JSON.stringify(jsonData));
+}
+
+function loadStatistics(data) {
+    let { count, firstDate, lastDate, answers } = data;
+    $g.statsCount.text(count);
+
+    $g.statsFirstDate.text(moment(firstDate));
+    $g.statsLastDate.text(moment(lastDate));
+
+    let questionTemplate = $g.statsQuestionTemplate.html();
+    for (let answer_id in answers) {
+        let question = $(questionTemplate);
+        question.appendTo($g.statsQuestions);
+        question.text(JSON.stringify(answers[answer_id]));
+    }
+
+    console.log("Finished loading statistics");
+    $g.statsLoadingLabel.toggleClass('hide', true);
+    $g.statsResult.toggleClass('hide', false);
 }
 
 function loadQuestions(data) {
