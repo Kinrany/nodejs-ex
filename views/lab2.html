@@ -32,20 +32,42 @@
         <div class="col s12 m7 l8">
             <form id="input-form" class="row" onsubmit="return false;">
                 <div id="input-questions" class="col s12">
+                    <!-- Вопросы -->
                     <span class="hide-on-form-load grey-text">(загрузка вопросов)</span>
                 </div>
                 <div class="col s12">
+                    <!-- Имя пользователя -->
                     Имя:
                     <div class="input-field inline">
                         <input id="input-name" type="text" />
                     </div>
                 </div>
                 <div class="col s12">
-                    <button type="submit" class="btn waves-effect waves-light">Отправить</button>
+                    <div class="row">
+                        <div class="col">
+                            <!-- Кнопка отправки -->
+                            <button type="submit" class="btn waves-effect waves-light">Отправить</button>
+                        </div>
+                        <div class="col">
+                            <!-- Результат отправки -->
+                            <span id="success-label" class="green-text hide">Успех!</span>
+                            <span id="failure-label" class="red-text hide">Неудача!</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col s12">
-                    <p id="success-label" class="green-text hide">Успех!</p>
-                    <p id="failure-label" class="red-text hide">Неудача!</p>
+                    
+                </div>
+                <div class="col s12">
+                    <!-- Вывод статистики -->
+                    <p id="stats-waiting-label" class="grey-text">(отправьте для просмотра результатов)</p>
+                    <p id="stats-loading-label" class="grey-text hide">(загрузка)</p>
+                    <div id="stats-result" class="hide">
+                        <p id="stats-count">DEBUG: stats-count</p>
+                        <p id="stats-first-date">DEBUG: stats-first-date</p>
+                        <p id="stats-last-date">DEBUG: stats-last-date</p>
+                        <ul id="stats-questions"></ul>
+                    </div>
                 </div>
             </form>
         </div>
@@ -56,6 +78,12 @@
             <span class="input-question-label"></span>
             <select class="input-question-select"></select>
         </div>
+    </template>
+
+    <template id="statistics-question-template">
+        <li class="statistics-question">
+            <p>DEBUG: тут будет результат</p>
+        </li>
     </template>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
